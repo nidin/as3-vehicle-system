@@ -1,0 +1,9 @@
+<?xml version="1.0" standalone="no"?>
+<version path="/nid/utils/" package="nid.utils">
+  <major>1</major>
+  <minor>0</minor>
+  <build>17</build>
+  <revision>0</revision>
+  <author>Nidin P Vinayak</author>
+  <timestamp>29/10/12 6:14:27 PM</timestamp>
+</version>
