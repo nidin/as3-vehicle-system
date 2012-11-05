@@ -8,10 +8,9 @@ package nid.game.systems.vehicle
 	 * ...
 	 * @author Nidin P Vinayak
 	 */
-	public class Car implements IVehicle
+	public class Car  extends Pivot3D implements IVehicle
 	{
 		private var system:VehicleSystem;
-		private var scene:Scene3D;
 		public var body:Mesh3D
 		public var hood:Mesh3D
 		public var front_bumper:Mesh3D
@@ -26,77 +25,52 @@ package nid.game.systems.vehicle
 		public var tyre_back_L:Mesh3D
 		public var tyre_back_R:Mesh3D
 		
-		public var parts:Vector.<Part>;
+		public var parts:CarParts;
+		public var holder:Pivot3D;
 		
 		public function getPart(partName:String):Part
 		{
-			for (var i:int = 0; i < parts.length; i++)
-			{
-				var part:Part = parts[i];
-				if (part.name == partName)
-				{
-					return part;
-				}
-			}
-			return null;
+			return parts.getPart(partName);
 		}
 		
-		public function Car(obj:Pivot3D=null,scene:Scene3D=null) 
+		public function Car(obj:Pivot3D=null) 
 		{
-			this.scene = scene;
-			parts = new Vector.<Part>();
 			system = new VehicleSystem();
-			
-			//changeable parts
-			parts.push(new Part("hood"));
-			parts.push(new Part("mirror_l"));
-			parts.push(new Part("mirror_r"));
-			parts.push(new Part("skirt_l"));
-			parts.push(new Part("skirt_r"));
-			parts.push(new Part("bumper_front"));
-			parts.push(new Part("bumper_rear"));
-			parts.push(new Part("spoiler"));
-			
-			//default parts
-			parts.push(new Part("body"));
-			parts.push(new Part("head_l_fr"));
-			parts.push(new Part("head_l_fl"));
-			parts.push(new Part("head_l_br"));
-			parts.push(new Part("head_l_bl"));
-			parts.push(new Part("glass_r1"));
-			parts.push(new Part("glass_r2"));
-			parts.push(new Part("glass_l1"));
-			parts.push(new Part("glass_l2"));
-			parts.push(new Part("glass_front"));
-			parts.push(new Part("glass_rear"));
-			parts.push(new Part("no_plat_front"));
-			parts.push(new Part("no_plat_rear"));
-			
-			//universal parts
-			parts.push(new Part("tyer_front_l"));
-			parts.push(new Part("tyer_front_r"));
-			parts.push(new Part("tyer_rear_l"));
-			parts.push(new Part("tyer_rear_r"));
-			
-			
+			parts = new CarParts();
 			if(obj!=null)
 			setup(obj);
 		}
 		
 		public function setup(obj:Pivot3D):void
 		{
+			holder = obj;
+			addChild(holder);
+			
 			for (var i:int = 0; i < obj.children.length; i++)
 			{
-				mapPart(obj.children[i]);
-				var part:Pivot3D = obj.children[i];
-				parts.push(new Part(part));
-				
+				parts.mapPart(obj.children[i]);
+				trace(obj.children[i].name);
 			}
 		}
 		
-		private function mapPart(obj:Pivot3D):void 
+		//override
+		override public function getChildByName(name:String, startIndex:int = 0, includeChildren:Boolean = true):flare.core.Pivot3D 
 		{
+			return holder.getChildByName(name, startIndex, includeChildren);
+		}
+		
+		public function setWheel(obj:Pivot3D):void 
+		{
+			var wheel_FR:Pivot3D = obj.getChildByName('main');
+			var wheel_BR:Pivot3D = wheel_FR.clone();
 			
+			var wheel_FL:Pivot3D = wheel_FR.clone();
+			var wheel_BL:Pivot3D = wheel_FR.clone();
+			
+			holder.getChildByName('wheel_BR').addChild(wheel_FL);
+			//holder.addChild(wheel_FR);
+			//holder.addChild(wheel_BL);
+			//holder.addChild(wheel_BR);
 		}
 	}
 

@@ -3,6 +3,7 @@ package nid.test
 	import com.bit101.components.PushButton;
 	import flare.basic.Scene3D;
 	import flare.basic.Viewer3D;
+	import flare.core.Camera3D;
 	import flare.core.Pivot3D;
 	import flare.core.Poly3D;
 	import flare.loaders.Flare3DLoader;
@@ -19,7 +20,8 @@ package nid.test
 	public class VehicleSystemTest extends Sprite
 	{
 		private var scene:Viewer3D;
-		private var container:Pivot3D;
+		private var car_container:Pivot3D;
+		private var wheel_container:Pivot3D;
 		private var next:PushButton;
 		private var prev:PushButton;
 		private var vehicle:Car;
@@ -34,9 +36,11 @@ package nid.test
 			scene.autoResize = true;
 			scene.antialias = 2;
 			
-			container = new Pivot3D("vehicle");
+			car_container = new Pivot3D("vehicle");
+			wheel_container = new Pivot3D("wheel");
 			
-			scene.addChildFromFile( "car.f3d" , container);
+			scene.addChildFromFile( "car.f3d" , car_container);
+			scene.addChildFromFile( "wheel.f3d" , wheel_container);
 			scene.addEventListener( Scene3D.PROGRESS_EVENT, progressEvent )
 			scene.addEventListener( Scene3D.COMPLETE_EVENT, completeEvent )
 			
@@ -59,7 +63,7 @@ package nid.test
 		{
 			if (e.currentTarget == next)
 			{
-				vehicle.front_bumper
+				//vehicle.front_bumper
 			}
 			else
 			{
@@ -75,7 +79,18 @@ package nid.test
 		{
 			trace( "complete" );
 			//scene.addChild(container);
-			vehicle = new Car(container, scene);
+			vehicle = new Car(car_container);
+			vehicle.setWheel(wheel_container);
+			//vehicle.z = 5;
+			scene.addChild(vehicle)
+			//addEventListener(Event.ENTER_FRAME, update);
+		}
+		
+		private function update(e:Event):void 
+		{
+			vehicle.rotateX(vehicle.getRotation().x + 1);
+			vehicle.rotateY(vehicle.getRotation().y + 1);
+			vehicle.rotateZ(vehicle.getRotation().z + 1);
 		}
 	}
 
