@@ -9,6 +9,10 @@ package nid.test
 	import flare.loaders.Flare3DLoader;
 	import flare.loaders.Flare3DLoader1;
 	import flare.materials.filters.SpecularFilter;
+	import flare.physics.core.PhysicsPlane;
+	import flare.physics.core.RigidBody;
+	import flare.system.Input3D;
+	import flare.utils.Pivot3DUtils;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -20,12 +24,14 @@ package nid.test
 	 */
 	public class VehicleSystemTest extends Sprite
 	{
-		private var scene:Viewer3D;
+		private var scene:Scene3D;
 		private var car_container:Pivot3D;
 		private var wheel_container:Pivot3D;
 		private var next:PushButton;
 		private var prev:PushButton;
 		private var vehicle:Car;
+		private var camera:Camera3D;
+		private var world_container:Pivot3D;
 		
 		public function VehicleSystemTest() 
 		{
@@ -38,9 +44,17 @@ package nid.test
 			scene.autoResize = true;
 			scene.antialias = 2;
 			
+			camera = new Camera3D('tail_camera');
+			camera.x = 10
+			camera.y = 10
+			camera.z = 10
+			scene.camera = camera;
+			
+			world_container = new Pivot3D("world");
 			car_container = new Pivot3D("vehicle");
 			wheel_container = new Pivot3D("wheel");
 			
+			scene.addChildFromFile( "world.f3d" , world_container);
 			scene.addChildFromFile( "car.f3d" , car_container);
 			scene.addChildFromFile( "wheel.f3d" , wheel_container);
 			scene.addEventListener( Scene3D.PROGRESS_EVENT, progressEvent )
@@ -84,16 +98,66 @@ package nid.test
 			vehicle = new Car(car_container);
 			//trace('Material:'+vehicle.getMaterialByName("Material #21"));
 			vehicle.setWheel(wheel_container);
-			//vehicle.z = 5;
-			scene.addChild(vehicle)
+			//vehicle.y = 0.5;
+			var floor:Pivot3D = world_container.getChildByName("floor");
+			var floorPhysics:RigidBody = new PhysicsPlane();
+			floor.addComponent(floorPhysics);
+			scene.addChild(world_container);
+			scene.addChild(vehicle);
+			camera.lookAt(vehicle.x, vehicle.y, vehicle.z);
 			//addEventListener(Event.ENTER_FRAME, update);
+			scene.addEventListener( Scene3D.UPDATE_EVENT, updateEvent );
 		}
-		
+		private function updateEvent(e:Event = null):void {
+			vehicle.setAccelerate(0);
+			vehicle.setSteer(0);
+			vehicle.setHBrake(false);
+			if (Input3D.keyDown(Input3D.UP)) {
+				vehicle.setAccelerate(2);
+			}
+			if (Input3D.keyDown(Input3D.DOWN)) {
+				vehicle.setAccelerate(-0.5);
+			}
+			if (Input3D.keyDown(Input3D.LEFT)) {
+				vehicle.setSteer(-1);
+			}
+			if (Input3D.keyDown(Input3D.RIGHT)) {
+				vehicle.setSteer(1);
+			}
+			if (Input3D.keyDown(Input3D.SPACE)) {
+				vehicle.setHBrake(true);
+			}
+
+			if (Input3D.keyHit(Input3D.R)) {
+				vehicle.reset();
+			}
+			vehicle.step();
+			if (!Input3D.mouseDown)
+			{
+				Pivot3DUtils.setPositionWithReference( scene.camera, 0, 2, -5, vehicle.chassis, 0.025 );
+				Pivot3DUtils.lookAtWithReference( scene.camera, 0, 0, 0, vehicle.chassis );
+			}
+		}
 		private function update(e:Event):void 
 		{
-			vehicle.rotateX(vehicle.getRotation().x + 1);
-			vehicle.rotateY(vehicle.getRotation().y + 1);
-			vehicle.rotateZ(vehicle.getRotation().z + 1);
+			//vehicle.rotateX(vehicle.getRotation().x + 1);
+			//vehicle.rotateY(vehicle.getRotation().y + 1);
+			//vehicle.rotateZ(vehicle.getRotation().z + 1);
+			if (Input3D.keyDown(Input3D.RIGHT) || Input3D.keyDown(Input3D.D))
+				vehicle.turnLeft();
+			else if (Input3D.keyDown(Input3D.LEFT) || Input3D.keyDown(Input3D.A))
+				vehicle.turnRight();
+				
+			if (Input3D.keyDown(Input3D.UP) || Input3D.keyDown(Input3D.W))
+			{
+				vehicle.accelerate();
+			}
+			else if (Input3D.keyDown(Input3D.DOWN) || Input3D.keyDown(Input3D.S))
+			{
+				vehicle.decelerate();
+			}
+			Pivot3DUtils.setPositionWithReference( scene.camera, 0, 2, -5, vehicle, 0.25 );
+			Pivot3DUtils.lookAtWithReference( scene.camera, 0, 0, 0, vehicle );
 		}
 	}
 
