@@ -8,6 +8,7 @@ package nid.test
 	import flare.core.Poly3D;
 	import flare.loaders.Flare3DLoader;
 	import flare.loaders.Flare3DLoader1;
+	import flare.materials.filters.SpecularFilter;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -33,6 +34,7 @@ package nid.test
 			
 			scene = new Viewer3D( this );
 			scene.registerClass(Flare3DLoader1);
+			scene.registerClass(SpecularFilter);
 			scene.autoResize = true;
 			scene.antialias = 2;
 			
@@ -80,6 +82,7 @@ package nid.test
 			trace( "complete" );
 			//scene.addChild(container);
 			vehicle = new Car(car_container);
+			//trace('Material:'+vehicle.getMaterialByName("Material #21"));
 			vehicle.setWheel(wheel_container);
 			//vehicle.z = 5;
 			scene.addChild(vehicle)

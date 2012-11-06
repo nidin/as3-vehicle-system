@@ -52,6 +52,8 @@
   <libraryPaths>
     <element path="lib\Flare3D_Commercial_2048c.swc" />
     <element path="lib\MinimalComps_0_9_10.swc" />
+    <element path="ref\flare_physics\Flare3D_Physics_1000.swc" />
+    <element path="ref\flare_physics\Flare3D_2046.swc" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>

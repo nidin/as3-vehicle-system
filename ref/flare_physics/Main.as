@@ -32,7 +32,8 @@
 		private var carBody:PhysicsVehicle;
 		private var chassis:Pivot3D;
 		public function Main():void {
-			scene = new Viewer3D(this,"without_this_embed_wont_work.f3d");
+			scene = new Viewer3D(this, "without_this_embed_wont_work.f3d");
+			scene.registerClass(Flare3DLoader1);
 			scene.addEventListener(Scene3D.COMPLETE_EVENT, completeEvent);
 			physics=PhysicsSystemManager.getInstance();
 			for (var i:int;i<20;i++){
