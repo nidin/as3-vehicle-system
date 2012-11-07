@@ -9,7 +9,7 @@
     <movie width="800" />
     <movie height="600" />
     <movie version="11" />
-    <movie minorVersion="3" />
+    <movie minorVersion="5" />
     <movie platform="Flash Player" />
     <movie background="#FFFFFF" />
   </output>
@@ -50,10 +50,10 @@
   </includeLibraries>
   <!-- SWC Libraries -->
   <libraryPaths>
-    <element path="lib\Flare3D_Commercial_2048c.swc" />
     <element path="lib\MinimalComps_0_9_10.swc" />
+    <element path="lib\Alternativa3D.swc" />
+    <element path="lib\Flare3D_Commercial_2048c.swc" />
     <element path="ref\flare_physics\Flare3D_Physics_1000.swc" />
-    <element path="ref\flare_physics\Flare3D_2046.swc" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>
@@ -73,7 +73,7 @@
   </library>
   <!-- Class files to compile (other referenced classes will automatically be included) -->
   <compileTargets>
-    <compile path="src\nid\test\VehicleSystemTest.as" />
+    <compile path="src\nid\test\VehicleSystemTest2.as" />
   </compileTargets>
   <!-- Paths to exclude from the Project Explorer tree -->
   <hiddenPaths>

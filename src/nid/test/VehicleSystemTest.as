@@ -94,18 +94,17 @@ package nid.test
 		private function completeEvent(e:Event):void 
 		{
 			trace( "complete" );
-			//scene.addChild(container);
 			vehicle = new Car(car_container);
-			//trace('Material:'+vehicle.getMaterialByName("Material #21"));
 			vehicle.setWheel(wheel_container);
-			//vehicle.y = 0.5;
+			
 			var floor:Pivot3D = world_container.getChildByName("floor");
-			var floorPhysics:RigidBody = new PhysicsPlane();
-			floor.addComponent(floorPhysics);
+			floor.addComponent(new PhysicsPlane());
+			
 			scene.addChild(world_container);
 			scene.addChild(vehicle);
+			
 			camera.lookAt(vehicle.x, vehicle.y, vehicle.z);
-			//addEventListener(Event.ENTER_FRAME, update);
+			
 			scene.addEventListener( Scene3D.UPDATE_EVENT, updateEvent );
 		}
 		private function updateEvent(e:Event = null):void {
@@ -140,9 +139,6 @@ package nid.test
 		}
 		private function update(e:Event):void 
 		{
-			//vehicle.rotateX(vehicle.getRotation().x + 1);
-			//vehicle.rotateY(vehicle.getRotation().y + 1);
-			//vehicle.rotateZ(vehicle.getRotation().z + 1);
 			if (Input3D.keyDown(Input3D.RIGHT) || Input3D.keyDown(Input3D.D))
 				vehicle.turnLeft();
 			else if (Input3D.keyDown(Input3D.LEFT) || Input3D.keyDown(Input3D.A))

@@ -9,6 +9,7 @@ package nid.game.systems.vehicle
 	import flare.materials.filters.TextureFilter;
 	import flare.materials.Shader3D;
 	import flare.physics.core.PhysicsBox;
+	import flare.physics.core.PhysicsMesh;
 	import flare.physics.core.PhysicsSystemManager;
 	import flare.physics.core.RigidBody;
 	import flare.physics.vehicles.PhysicsVehicle;
@@ -42,9 +43,9 @@ package nid.game.systems.vehicle
 		
 		[Embed(source = "../../../../../model/texture/decal1a.jpg")]
 		private var bmp1:Class;
-		private var physics:PhysicsSystemManager;
 		private var carBody:PhysicsVehicle;
 		public var chassis:Pivot3D;
+		public var physics:PhysicsSystemManager;
 		
 		public function getPart(partName:String):Part
 		{
@@ -59,7 +60,7 @@ package nid.game.systems.vehicle
 			//material.filters.push(new SpecularFilter());
 			system = new VehicleSystem();
 			parts = new CarParts();
-			physics=PhysicsSystemManager.getInstance();
+			
 			if(obj!=null)
 			setup(obj);
 		}
@@ -67,26 +68,22 @@ package nid.game.systems.vehicle
 		public function setup(chassis:Pivot3D):void
 		{
 			this.chassis = chassis;
-			holder = new Pivot3D("holder");
-			holder.addChild(chassis);
-			addChild(holder);
-			chassis.addComponent(new PhysicsBox());
-			//obj.setMaterial(material);
+			addChild(chassis);
+			//var chassisBox:PhysicsMesh = new PhysicsMesh();
+			//chassis.addComponent(chassisBox);
+			//chassisBox.mass = 3;
+			//chassisBox.setActive(true);
 			for (var i:int = 0; i < chassis.children.length; i++)
 			{
+				var phyMesh:PhysicsMesh = new PhysicsMesh();
+				phyMesh.mass = 300;
 				parts.mapPart(chassis.children[i]);
-				//trace(chassis.children[i].name);
+				chassis.children[i].addComponent(phyMesh);
 				//trace('Material:' + obj.children[i].);
 			}
-			
-			carBody=new PhysicsVehicle(chassis.components[0] as RigidBody,40,2.5,12000);
-			carBody.chassis.mass = 2;
-			carBody.chassis.setPosition(chassis.x, chassis.y, chassis.z);
-			var chassisPos:Vector3D = chassis.getPosition();
-			physics.addVehicle(carBody);
+			//chassis.setRotation(0, 0, 0);
 		}
 		
-		//override
 		override public function getChildByName(name:String, startIndex:int = 0, includeChildren:Boolean = true):flare.core.Pivot3D 
 		{
 			return holder.getChildByName(name, startIndex, includeChildren);
@@ -95,42 +92,19 @@ package nid.game.systems.vehicle
 		public function setWheel(obj:Pivot3D):void 
 		{
 			var wheel_FR:Pivot3D = obj.getChildByName('main');
-			//wheel_FR.setScale(1, 1.25, 1.25);
-			wheel_FR.x = 0;
-			wheel_FR.y = 0;
-			wheel_FR.z = 0;
+			wheel_FR.resetTransforms();
+			wheel_FR.setScale(1, 1.25, 1.25);
 			var wheel_BR:Pivot3D = wheel_FR.clone();
 			
 			var wheel_FL:Pivot3D = wheel_FR.clone();
-			//wheel_FL.rotateY(180);
+			wheel_FL.rotateY(180);
 			var wheel_BL:Pivot3D = wheel_FR.clone();
-			//wheel_BL.rotateY(180);
+			wheel_BL.rotateY(180);
 			
-			holder.getChildByName('wheel_FR').addChild(wheel_FR);
-			holder.getChildByName('wheel_FL').addChild(wheel_FL);
-			holder.getChildByName('wheel_BR').addChild(wheel_BR);
-			holder.getChildByName('wheel_BL').addChild(wheel_BL);
-			
-			holder.getChildByName('wheel_FR').y = -1
-			holder.getChildByName('wheel_FL').y = -1
-			holder.getChildByName('wheel_BR').y = -1
-			holder.getChildByName('wheel_BL').y = -1
-			
-			var pos1:Vector3D = wheel_FL.getPosition();
-			var pos2:Vector3D = wheel_FR.getPosition();
-			var pos3:Vector3D = wheel_BL.getPosition();
-			var pos4:Vector3D = wheel_BR.getPosition();
-			//pos1.y = -1;
-			//pos2.y = -1;
-			//pos3.y = -1;
-			//pos4.y = -1;
-			
-			carBody.addWheel("1", wheel_FL, true, true, pos1);
-			carBody.addWheel("2", wheel_FR, true, true, pos2);
-			carBody.addWheel("3", wheel_BL, false, true, pos3);
-			carBody.addWheel("4", wheel_BR, false, true, pos4);
-			
-			trace(carBody.wheels[1]);
+			chassis.getChildByName('wheel_FR').addChild(wheel_FR);
+			chassis.getChildByName('wheel_FL').addChild(wheel_FL);
+			chassis.getChildByName('wheel_BR').addChild(wheel_BR);
+			chassis.getChildByName('wheel_BL').addChild(wheel_BL);
 		}
 		
 		public function accelerate():void 
@@ -154,9 +128,8 @@ package nid.game.systems.vehicle
 		
 		public function reset():void 
 		{
-			carBody.chassis.setPosition(0, 2, 0);
-			carBody.chassis.setOrientation(new Matrix3D());
-			carBody.chassis.setActive(true);
+			//chassis.setPosition(0, 0, 0);
+			chassis.setOrientation(new Vector3D());
 		}
 		
 		public function step():void 
