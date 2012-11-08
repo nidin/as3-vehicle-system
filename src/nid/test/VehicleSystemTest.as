@@ -55,7 +55,7 @@ package nid.test
 			wheel_container = new Pivot3D("wheel");
 			
 			scene.addChildFromFile( "world.f3d" , world_container);
-			scene.addChildFromFile( "car.f3d" , car_container);
+			scene.addChildFromFile( "test-car-3.f3d" , car_container);
 			scene.addChildFromFile( "wheel.f3d" , wheel_container);
 			scene.addEventListener( Scene3D.PROGRESS_EVENT, progressEvent )
 			scene.addEventListener( Scene3D.COMPLETE_EVENT, completeEvent )
@@ -94,14 +94,17 @@ package nid.test
 		private function completeEvent(e:Event):void 
 		{
 			trace( "complete" );
-			vehicle = new Car(car_container);
-			vehicle.setWheel(wheel_container);
 			
 			var floor:Pivot3D = world_container.getChildByName("floor");
-			floor.addComponent(new PhysicsPlane());
+			floor.resetTransforms();
 			
-			scene.addChild(world_container);
+			vehicle = new Car(car_container);
+			vehicle.setWheel(wheel_container);
+			vehicle.setWorld(floor);
+			
+			scene.addChild(floor);
 			scene.addChild(vehicle);
+			scene.addChild(vehicle.collider);
 			
 			camera.lookAt(vehicle.x, vehicle.y, vehicle.z);
 			
@@ -112,16 +115,16 @@ package nid.test
 			vehicle.setSteer(0);
 			vehicle.setHBrake(false);
 			if (Input3D.keyDown(Input3D.UP)) {
-				vehicle.setAccelerate(2);
+				vehicle.setAccelerate(0.1);
 			}
 			if (Input3D.keyDown(Input3D.DOWN)) {
-				vehicle.setAccelerate(-0.5);
+				vehicle.setAccelerate(-0.1);
 			}
 			if (Input3D.keyDown(Input3D.LEFT)) {
-				vehicle.setSteer(-1);
+				vehicle.setSteer(-0.1);
 			}
 			if (Input3D.keyDown(Input3D.RIGHT)) {
-				vehicle.setSteer(1);
+				vehicle.setSteer(0.1);
 			}
 			if (Input3D.keyDown(Input3D.SPACE)) {
 				vehicle.setHBrake(true);
@@ -136,24 +139,6 @@ package nid.test
 				Pivot3DUtils.setPositionWithReference( scene.camera, 0, 2, -5, vehicle.chassis, 0.025 );
 				Pivot3DUtils.lookAtWithReference( scene.camera, 0, 0, 0, vehicle.chassis );
 			}
-		}
-		private function update(e:Event):void 
-		{
-			if (Input3D.keyDown(Input3D.RIGHT) || Input3D.keyDown(Input3D.D))
-				vehicle.turnLeft();
-			else if (Input3D.keyDown(Input3D.LEFT) || Input3D.keyDown(Input3D.A))
-				vehicle.turnRight();
-				
-			if (Input3D.keyDown(Input3D.UP) || Input3D.keyDown(Input3D.W))
-			{
-				vehicle.accelerate();
-			}
-			else if (Input3D.keyDown(Input3D.DOWN) || Input3D.keyDown(Input3D.S))
-			{
-				vehicle.decelerate();
-			}
-			Pivot3DUtils.setPositionWithReference( scene.camera, 0, 2, -5, vehicle, 0.25 );
-			Pivot3DUtils.lookAtWithReference( scene.camera, 0, 0, 0, vehicle );
 		}
 	}
 

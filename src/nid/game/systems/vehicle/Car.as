@@ -1,18 +1,27 @@
 package nid.game.systems.vehicle 
 {
+	import caurina.transitions.Tweener;
 	import flare.basic.Scene3D;
+	import flare.collisions.SphereCollision;
 	import flare.core.Mesh3D;
 	import flare.core.Pivot3D;
 	import flare.core.Texture3D;
 	import flare.materials.filters.ColorFilter;
 	import flare.materials.filters.SpecularFilter;
 	import flare.materials.filters.TextureFilter;
+	import flare.materials.Material3D;
 	import flare.materials.Shader3D;
+	import flare.physics.collision.BoxCollisionPrimitive;
+	import flare.physics.collision.CollisionPrimitive;
+	import flare.physics.collision.CollisionResultInfo;
+	import flare.physics.collision.MeshCollisionPrimitive;
+	import flare.physics.collision.PlaneCollisionPrimitive;
 	import flare.physics.core.PhysicsBox;
 	import flare.physics.core.PhysicsMesh;
 	import flare.physics.core.PhysicsSystemManager;
 	import flare.physics.core.RigidBody;
 	import flare.physics.vehicles.PhysicsVehicle;
+	import flare.primitives.Box;
 	import flash.geom.Matrix3D;
 	import flash.geom.Vector3D;
 	import nid.game.systems.VehicleSystem;
@@ -44,6 +53,15 @@ package nid.game.systems.vehicle
 		[Embed(source = "../../../../../model/texture/decal1a.jpg")]
 		private var bmp1:Class;
 		private var carBody:PhysicsVehicle;
+		//private var ground:PlaneCollisionPrimitive;
+		private var ground:CollisionPrimitive;
+		private var collision:CollisionPrimitive;
+		private var sp_collisions:SphereCollision;
+		private var wheel_FR:Pivot3D;
+		private var wheel_BR:Pivot3D;
+		private var wheel_FL:Pivot3D;
+		private var wheel_BL:Pivot3D;
+		public var collider:Mesh3D;
 		public var chassis:Pivot3D;
 		public var physics:PhysicsSystemManager;
 		
@@ -54,11 +72,7 @@ package nid.game.systems.vehicle
 		
 		public function Car(obj:Pivot3D=null) 
 		{
-			material = new Shader3D("");
-			material.filters.push(new ColorFilter(0x0FFFFF));
-			//material.filters.push(new TextureFilter(new Texture3D(new bmp1().bitmapData)));
-			//material.filters.push(new SpecularFilter());
-			system = new VehicleSystem();
+			system = new VehicleSystem(this);
 			parts = new CarParts();
 			
 			if(obj!=null)
@@ -69,19 +83,14 @@ package nid.game.systems.vehicle
 		{
 			this.chassis = chassis;
 			addChild(chassis);
-			//var chassisBox:PhysicsMesh = new PhysicsMesh();
-			//chassis.addComponent(chassisBox);
-			//chassisBox.mass = 3;
-			//chassisBox.setActive(true);
+			
 			for (var i:int = 0; i < chassis.children.length; i++)
 			{
-				var phyMesh:PhysicsMesh = new PhysicsMesh();
-				phyMesh.mass = 300;
+				chassis.children[i].visible = false;
 				parts.mapPart(chassis.children[i]);
-				chassis.children[i].addComponent(phyMesh);
-				//trace('Material:' + obj.children[i].);
+				//trace(chassis.children[i].name)
 			}
-			//chassis.setRotation(0, 0, 0);
+			parts.init();
 		}
 		
 		override public function getChildByName(name:String, startIndex:int = 0, includeChildren:Boolean = true):flare.core.Pivot3D 
@@ -91,14 +100,14 @@ package nid.game.systems.vehicle
 		
 		public function setWheel(obj:Pivot3D):void 
 		{
-			var wheel_FR:Pivot3D = obj.getChildByName('main');
+			wheel_FR = obj.getChildByName('main');
 			wheel_FR.resetTransforms();
 			wheel_FR.setScale(1, 1.25, 1.25);
-			var wheel_BR:Pivot3D = wheel_FR.clone();
+			wheel_BR = wheel_FR.clone();
 			
-			var wheel_FL:Pivot3D = wheel_FR.clone();
+			wheel_FL = wheel_FR.clone();
 			wheel_FL.rotateY(180);
-			var wheel_BL:Pivot3D = wheel_FR.clone();
+			wheel_BL = wheel_FR.clone();
 			wheel_BL.rotateY(180);
 			
 			chassis.getChildByName('wheel_FR').addChild(wheel_FR);
@@ -107,49 +116,40 @@ package nid.game.systems.vehicle
 			chassis.getChildByName('wheel_BL').addChild(wheel_BL);
 		}
 		
-		public function accelerate():void 
-		{
-			this.translateZ(0.21);
-		}
-		public function decelerate():void 
-		{
-			this.translateZ(-0.21);
-		}
-		
-		public function turnLeft():void 
-		{
-			this.rotateY(6);
-		}
-		
-		public function turnRight():void 
-		{
-			this.rotateY(-6);
-		}
-		
 		public function reset():void 
 		{
-			//chassis.setPosition(0, 0, 0);
 			chassis.setOrientation(new Vector3D());
 		}
 		
 		public function step():void 
 		{
-			physics.step();
+			system.process();
 		}
 		
 		public function setHBrake(value:Boolean):void 
 		{
-			carBody.setHBrake(value);
+			
 		}
 		
 		public function setSteer(value:Number):void 
 		{
-			carBody.setSteer(value);
+			system.steering(value);
 		}
 		
 		public function setAccelerate(value:Number):void 
 		{
-			carBody.setAccelerate(value);
+			//this.translateZ(value);
+			system.accelerate(value);
+		}
+		
+		public function setWorld(obj:Pivot3D):void 
+		{
+			//addChild(obj);
+			//sp_collisions.addCollisionWith(obj);
+			ground = new MeshCollisionPrimitive(obj as Mesh3D);
+			//ground = new PlaneCollisionPrimitive();
+			//ground = new BoxCollisionPrimitive(new Vector3D(1, 1, 1))
+			//ground.transform = obj.world;
 		}
 	}
 
