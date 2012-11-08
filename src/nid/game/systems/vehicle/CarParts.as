@@ -15,34 +15,41 @@ package nid.game.systems.vehicle
 			
 			//changeable parts
 			parts.push(new Part("hood"));
-			parts.push(new Part("mirror_l"));
-			parts.push(new Part("mirror_r"));
-			parts.push(new Part("skirt_l"));
-			parts.push(new Part("skirt_r"));
-			parts.push(new Part("bumper_front"));
-			parts.push(new Part("bumper_rear"));
+			parts.push(new Part("mirror_L"));
+			parts.push(new Part("mirror_R"));
+			parts.push(new Part("skirt_L"));
+			parts.push(new Part("skirt_R"));
+			parts.push(new Part("bumper_F"));
+			parts.push(new Part("bumper_B"));
 			parts.push(new Part("spoiler"));
 			
-			//default parts
+			//fixed parts
 			parts.push(new Part("body"));
-			parts.push(new Part("head_l_fr"));
-			parts.push(new Part("head_l_fl"));
-			parts.push(new Part("head_l_br"));
-			parts.push(new Part("head_l_bl"));
-			parts.push(new Part("glass_r1"));
-			parts.push(new Part("glass_r2"));
-			parts.push(new Part("glass_l1"));
-			parts.push(new Part("glass_l2"));
-			parts.push(new Part("glass_front"));
-			parts.push(new Part("glass_rear"));
-			parts.push(new Part("no_plat_front"));
-			parts.push(new Part("no_plat_rear"));
+			
+			parts.push(new Part("head_light_L"));
+			parts.push(new Part("head_light_R"));
+			parts.push(new Part("brake_light_L"));
+			parts.push(new Part("brake_light_R"));
+			parts.push(new Part("tail_light_L"));
+			parts.push(new Part("tail_light_R"));
+			
+			parts.push(new Part("glass_R1"));
+			parts.push(new Part("glass_R2"));
+			parts.push(new Part("glass_L1"));
+			parts.push(new Part("glass_L2"));
+			parts.push(new Part("glass_F"));
+			parts.push(new Part("glass_B"));
+			parts.push(new Part("glass_HL_L"));
+			parts.push(new Part("glass_HL_R"));
+			
+			parts.push(new Part("no_plate_F"));
+			parts.push(new Part("no_plate_B"));
 			
 			//universal parts
-			parts.push(new Part("tyer_front_l"));
-			parts.push(new Part("tyer_front_r"));
-			parts.push(new Part("tyer_rear_l"));
-			parts.push(new Part("tyer_rear_r"));
+			parts.push(new Part("wheel_FL"));
+			parts.push(new Part("wheel_FR"));
+			parts.push(new Part("wheel_BR"));
+			parts.push(new Part("wheel_BL"));
 		}
 		public function getPart(partName:String):Part
 		{
@@ -57,20 +64,25 @@ package nid.game.systems.vehicle
 			return null;
 		}
 		
-		public function mapPart(obj:Pivot3D):void 
+		public function mapPart(part:Pivot3D):void 
 		{
-			var partName:String = getPartName(obj);
+			for (var i:int = 0; i < parts.length; i++)
+			{
+				if (part.name.indexOf(parts[i].name) > -1)
+				{
+					parts[i].push(part);
+					trace(part.name);
+				}
+			}
 		}
 		
-		private function getPartName(part:Pivot3D):String 
+		public function init():void 
 		{
-			var partName:String = "";
-			
-			if (part.name.indexOf("body") > -1)
+			for (var i:int = 0; i < parts.length; i++)
 			{
-				
+				parts[i].meshes.reverse();
+				if (parts[i].meshes.length > 0) parts[i].meshes[0].visible = true;
 			}
-			return partName;
 		}
 	}
 

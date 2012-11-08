@@ -7,13 +7,17 @@ package nid.game.systems.vehicle
 	 */
 	public class Part extends Pivot3D
 	{
-		private var meshes:Vector.<Pivot3D>;
+		public var meshes:Vector.<Pivot3D>;
 		
 		public function Part(name:String) 
 		{
 			this.name = name;
+			meshes = new Vector.<Pivot3D>();
 		}
-		
+		public function push(obj:Pivot3D):void
+		{
+			meshes.push(obj);
+		}
 	}
 
 }
