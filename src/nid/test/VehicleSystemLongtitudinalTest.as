@@ -102,7 +102,7 @@ package nid.test
 			vehicle.setWheel(wheel_container);
 			vehicle.setWorld(floor);
 			
-			vehicle.y = 0.8;
+			vehicle.reset();
 			
 			floor.setScale(100, 100, 100);
 			//vehicle.setScale(10, 10, 10);

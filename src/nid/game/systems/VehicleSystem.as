@@ -21,11 +21,13 @@ package nid.game.systems
 		
 		public var engineForce:Number = 17500;
 		public var mass:Number = 1500;
+		public var brake:Boolean;
 		
 		private var F_long:Number=0;
 		private var F_traction:Number=0;
 		private var F_drag:Number=0;
 		private var F_rr:Number=0;
+		private var F_braking:Number=3000;
 		private var a:Number = 0;
 		private var v:Number = 0;
 		private var u:Number = 1;
@@ -39,6 +41,7 @@ package nid.game.systems
 		private var acc_value:int;
 		private var brake_value:int;
 		private var velocity:Number;
+		private var steering_value:int;
 		
 		public function VehicleSystem(car:Car) 
 		{
@@ -51,7 +54,7 @@ package nid.game.systems
 			vehicle = _vehicle;
 		}
 		
-		public function accelerate(value:Number):void 
+		public function accelerate(value:int):void 
 		{
 			if (value == 0)
 			{
@@ -68,36 +71,50 @@ package nid.game.systems
 		
 		public function process():void 
 		{
+			if (brake && velocity < 0)
+			{
+				v = 0;
+				return;
+			}
 			F_drag 	= -C_drag * v * v;
 			F_rr 	= -C_rr * v;
-			
+			F_traction = brake?-F_braking:F_traction;
 			F_long = F_traction + F_drag + F_rr;
 			
 			a = F_long / mass;
 			v = v + a;
 			velocity = v / 100
+			
 			car.translateZ(velocity);
-			if (acc_value != 0) car.rotateY(steering_rot);
+			if (velocity != 0) car.rotateY(steering_rot);
 			//trace('---------------------------');
 			//trace('F_long:' + F_long);
 			//trace('F_drag:' + F_drag);
 			//trace('F_rr:' + F_rr);
 			//trace('acceleration:' + a);
-			trace('velocity:' + v.toFixed(0));
+			//trace('velocity:' + v.toFixed(0));
 			busy = true;
 		}
 		
-		public function steering(value:Number):void 
+		public function steering(value:int):void 
 		{
 			if (value == 0)
 			{
+				st = Number(st.toFixed(2));
 				if (st > 0) st -= 0.05;
+				else if (st < 0) st += 0.05;
 			}
 			else
 			{
+				if (steering_value != value)
+				st = -st;
 				if (st < 1) st += 0.05;
 			}
-			steering_rot = value * st * steering_power
+			steering_value = value == 0?steering_value:value;
+			steering_rot = steering_value * st * steering_power;
+			
+			car.wheel_FL.setRotation(0, 180 + (steering_value * 45 * st), 0);
+			car.wheel_FR.setRotation(0, steering_value * 45 * st, 0);
 		}
 		private function resetInterval():void {
 			dt = 0;

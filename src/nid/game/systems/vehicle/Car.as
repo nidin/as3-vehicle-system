@@ -57,10 +57,10 @@ package nid.game.systems.vehicle
 		private var ground:CollisionPrimitive;
 		private var collision:CollisionPrimitive;
 		private var sp_collisions:SphereCollision;
-		private var wheel_FR:Pivot3D;
-		private var wheel_BR:Pivot3D;
-		private var wheel_FL:Pivot3D;
-		private var wheel_BL:Pivot3D;
+		public var wheel_FR:Pivot3D;
+		public var wheel_BR:Pivot3D;
+		public var wheel_FL:Pivot3D;
+		public var wheel_BL:Pivot3D;
 		public var collider:Mesh3D;
 		public var chassis:Pivot3D;
 		public var physics:PhysicsSystemManager;
@@ -118,7 +118,8 @@ package nid.game.systems.vehicle
 		
 		public function reset():void 
 		{
-			chassis.setOrientation(new Vector3D());
+			this.resetTransforms();
+			this.y = 0.8;
 		}
 		
 		public function step():void 
@@ -128,7 +129,7 @@ package nid.game.systems.vehicle
 		
 		public function setHBrake(value:Boolean):void 
 		{
-			
+			system.brake = value;
 		}
 		
 		public function setSteer(value:Number):void 
