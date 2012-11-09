@@ -6,10 +6,10 @@
     <movie input="" />
     <movie path="bin\as3vehiclesystem.swf" />
     <movie fps="60" />
-    <movie width="800" />
-    <movie height="600" />
+    <movie width="1000" />
+    <movie height="800" />
     <movie version="11" />
-    <movie minorVersion="3" />
+    <movie minorVersion="5" />
     <movie platform="Flash Player" />
     <movie background="#FFFFFF" />
   </output>

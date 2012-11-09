@@ -31,7 +31,7 @@ package nid.game.systems.vehicle
 	 */
 	public class Car  extends Pivot3D implements IVehicle
 	{
-		private var system:VehicleSystem;
+		public var system:VehicleSystem;
 		private var material:Shader3D;
 		public var body:Mesh3D
 		public var hood:Mesh3D
@@ -65,6 +65,8 @@ package nid.game.systems.vehicle
 		public var chassis:Pivot3D;
 		public var physics:PhysicsSystemManager;
 		
+		public var gear_ratio:Vector.<Number>;
+		
 		public function getPart(partName:String):Part
 		{
 			return parts.getPart(partName);
@@ -72,6 +74,15 @@ package nid.game.systems.vehicle
 		
 		public function Car(obj:Pivot3D=null) 
 		{
+			gear_ratio = new Vector.<Number>();
+			gear_ratio.push(2.90);
+			gear_ratio.push(2.66);
+			gear_ratio.push(1.78);
+			gear_ratio.push(1.30);
+			gear_ratio.push(1.0);
+			gear_ratio.push(0.74);
+			gear_ratio.push(0.50);
+			
 			system = new VehicleSystem(this);
 			parts = new CarParts();
 			
@@ -110,10 +121,10 @@ package nid.game.systems.vehicle
 			wheel_BL = wheel_FR.clone();
 			wheel_BL.rotateY(180);
 			
-			chassis.getChildByName('wheel_FR').addChild(wheel_FR);
-			chassis.getChildByName('wheel_FL').addChild(wheel_FL);
-			chassis.getChildByName('wheel_BR').addChild(wheel_BR);
-			chassis.getChildByName('wheel_BL').addChild(wheel_BL);
+			addChild(chassis.getChildByName('wheel_FR')).addChild(wheel_FR);
+			addChild(chassis.getChildByName('wheel_FL')).addChild(wheel_FL);
+			addChild(chassis.getChildByName('wheel_BR')).addChild(wheel_BR);
+			addChild(chassis.getChildByName('wheel_BL')).addChild(wheel_BL);
 		}
 		
 		public function reset():void 
@@ -129,7 +140,7 @@ package nid.game.systems.vehicle
 		
 		public function setHBrake(value:Boolean):void 
 		{
-			system.brake = value;
+			system.brake(value);
 		}
 		
 		public function setSteer(value:Number):void 

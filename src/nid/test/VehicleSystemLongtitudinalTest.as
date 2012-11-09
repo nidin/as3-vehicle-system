@@ -16,6 +16,9 @@ package nid.test
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.text.TextField;
+	import flash.text.TextFieldAutoSize;
+	import flash.text.TextFormat;
 	import nid.game.systems.vehicle.Car;
 	import nid.game.systems.VehicleSystem;
 	/**
@@ -32,6 +35,7 @@ package nid.test
 		private var vehicle:Car;
 		private var camera:Camera3D;
 		private var world_container:Pivot3D;
+		private var info:TextField;
 		
 		public function VehicleSystemLongtitudinalTest() 
 		{
@@ -68,9 +72,17 @@ package nid.test
 			prev.x = next.width + 10;
 			button_holder.addChild(next);
 			button_holder.addChild(prev);
-			addChild(button_holder);
+			//addChild(button_holder);
 			button_holder.y = stage.stageHeight - button_holder.height - 20;
 			button_holder.x = (stage.stageWidth - button_holder.width) / 2;
+			
+			info = new TextField();
+			info.multiline = true;
+			info.wordWrap = true;
+			info.autoSize = TextFieldAutoSize.LEFT;
+			info.width = 500;
+			info.defaultTextFormat = new TextFormat("Verdana", 10, 0xffffff);
+			addChild(info);
 			
 			next.addEventListener(MouseEvent.CLICK, handleEvent);
 		}
@@ -148,9 +160,25 @@ package nid.test
 			vehicle.step();
 			if (!Input3D.mouseDown)
 			{
-				Pivot3DUtils.setPositionWithReference( scene.camera, 0, 2, -5, vehicle.chassis, 0.4 );
+				Pivot3DUtils.setPositionWithReference( scene.camera, 5, 2, -1, vehicle.chassis, 0.4 );
+				//Pivot3DUtils.setPositionWithReference( scene.camera, 0, 2, -5, vehicle.chassis, 0.4 );
 				Pivot3DUtils.lookAtWithReference( scene.camera, 0, 0, 0, vehicle.chassis );
 			}
+			info.htmlText = 'Wf:' + vehicle.system.Wf + 
+							'<br>Wr:' + vehicle.system.Wr + 
+							'<br>shift:' + vehicle.system.Wshift + 
+							'<br>A:' + vehicle.system.a + 
+							'<br>V:' + vehicle.system.v + 
+							'<br>F_drag:' + vehicle.system.F_drag + 
+							'<br>F_rr:' + vehicle.system.F_rr + 
+							'<br>F_long:' + vehicle.system.F_long +
+							'<br>F_traction:' + vehicle.system.F_traction +
+							'<br>F_braking:' + vehicle.system.F_braking +
+							'<br>RPM:' + vehicle.system.rpm +
+							'<br>HP:' + vehicle.system.hp +
+							'<br>Torque:' + vehicle.system.torque +
+							'<br>F_drive:' + vehicle.system.F_drive +
+							'<br>wheel_speed:' + vehicle.system.wheel_speed;
 		}
 	}
 
