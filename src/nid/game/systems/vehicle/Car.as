@@ -23,6 +23,7 @@ package nid.game.systems.vehicle
 	import flare.physics.vehicles.PhysicsVehicle;
 	import flare.primitives.Box;
 	import flash.geom.Matrix3D;
+	import flash.geom.Point;
 	import flash.geom.Vector3D;
 	import nid.game.systems.VehicleSystem;
 	/**
@@ -66,6 +67,19 @@ package nid.game.systems.vehicle
 		public var physics:PhysicsSystemManager;
 		
 		public var gear_ratio:Vector.<Number>;
+		
+		//Port values
+		public var cartype:CarType = new CarType;				// pointer to static car data
+		
+		public var position_wc:Point = new Point();		// position of car centre in world coordinates
+		public var velocity_wc:Point = new Point();		// velocity vector of car in world coordinates
+		
+		public var angle:Number=0;			// angle of car body orientation (in rads)
+		public var angularvelocity:Number=0;
+		
+		public var steerangle:Number=0;		// angle of steering (input)
+		public var throttle:Number=0;			// amount of throttle (input)
+		public var brake:Number=0;			// amount of braking (input)
 		
 		public function getPart(partName:String):Part
 		{
@@ -135,7 +149,7 @@ package nid.game.systems.vehicle
 		
 		public function step():void 
 		{
-			system.process();
+			system.do_physics();
 		}
 		
 		public function setHBrake(value:Boolean):void 

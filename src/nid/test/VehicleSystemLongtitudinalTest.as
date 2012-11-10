@@ -4,6 +4,7 @@ package nid.test
 	import flare.basic.Scene3D;
 	import flare.basic.Viewer3D;
 	import flare.core.Camera3D;
+	import flare.core.Light3D;
 	import flare.core.Pivot3D;
 	import flare.core.Poly3D;
 	import flare.loaders.Flare3DLoader;
@@ -11,6 +12,7 @@ package nid.test
 	import flare.materials.filters.SpecularFilter;
 	import flare.physics.core.PhysicsPlane;
 	import flare.physics.core.RigidBody;
+	import flare.system.Device3D;
 	import flare.system.Input3D;
 	import flare.utils.Pivot3DUtils;
 	import flash.display.Sprite;
@@ -36,6 +38,7 @@ package nid.test
 		private var camera:Camera3D;
 		private var world_container:Pivot3D;
 		private var info:TextField;
+		private var light:Light3D;
 		
 		public function VehicleSystemLongtitudinalTest() 
 		{
@@ -53,6 +56,9 @@ package nid.test
 			camera.y = 10
 			camera.z = 10
 			scene.camera = camera;
+			
+			light = new Light3D( "", Light3D.POINT )
+			scene.defaultLight = light
 			
 			world_container = new Pivot3D("world");
 			car_container = new Pivot3D("vehicle");
@@ -116,7 +122,7 @@ package nid.test
 			
 			vehicle.reset();
 			
-			floor.setScale(100, 100, 100);
+			floor.setScale(10, 10, 10);
 			//vehicle.setScale(10, 10, 10);
 			
 			scene.addChild(floor);
@@ -127,6 +133,8 @@ package nid.test
 			scene.addEventListener( Scene3D.UPDATE_EVENT, updateEvent );
 		}
 		private function updateEvent(e:Event = null):void {
+			
+			//light
 			
 			vehicle.setHBrake(false);
 			//Accelerator
@@ -158,7 +166,7 @@ package nid.test
 				vehicle.reset();
 			}
 			vehicle.step();
-			if (!Input3D.mouseDown)
+			if (!Input3D.mouseDown && !Input3D.keyDown(Input3D.CONTROL))
 			{
 				Pivot3DUtils.setPositionWithReference( scene.camera, 5, 2, -1, vehicle.chassis, 0.4 );
 				//Pivot3DUtils.setPositionWithReference( scene.camera, 0, 2, -5, vehicle.chassis, 0.4 );
@@ -168,16 +176,25 @@ package nid.test
 							'<br>Wr:' + vehicle.system.Wr + 
 							'<br>shift:' + vehicle.system.Wshift + 
 							'<br>A:' + vehicle.system.a + 
-							'<br>V:' + vehicle.system.v + 
+							'<br>V:' + vehicle.system.velocity.x + 
 							'<br>F_drag:' + vehicle.system.F_drag + 
 							'<br>F_rr:' + vehicle.system.F_rr + 
 							'<br>F_long:' + vehicle.system.F_long +
-							'<br>F_traction:' + vehicle.system.F_traction +
+							'<br>F_traction:' + vehicle.system.ftraction +
 							'<br>F_braking:' + vehicle.system.F_braking +
 							'<br>RPM:' + vehicle.system.rpm +
 							'<br>HP:' + vehicle.system.hp +
 							'<br>Torque:' + vehicle.system.torque +
+							'<br>force:' + vehicle.system.force.x +
 							'<br>F_drive:' + vehicle.system.F_drive +
+							'<br>throttle:' + vehicle.throttle +
+							'<br>brake:' + vehicle.brake +
+							'<br>accelerate:' + vehicle.system.acc_value +
+							'<br>angle:' + (vehicle.angle * (180/Math.PI)) +
+							'<br>rot_angle:' + (vehicle.system.rot_angle * (180/Math.PI)) +
+							'<br>angular_acceleration:' + vehicle.system.angular_acceleration +
+							'<br>delta_t:' + vehicle.system.delta_t +
+							'<br>angularvelocity:' + vehicle.angularvelocity +
 							'<br>wheel_speed:' + vehicle.system.wheel_speed;
 		}
 	}
