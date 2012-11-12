@@ -80,6 +80,7 @@ package nid.game.systems.vehicle
 		public var steerangle:Number=0;		// angle of steering (input)
 		public var throttle:Number=0;			// amount of throttle (input)
 		public var brake:Number=0;			// amount of braking (input)
+		public var reverse:Boolean;			// amount of braking (input)
 		
 		public function getPart(partName:String):Part
 		{
@@ -149,7 +150,7 @@ package nid.game.systems.vehicle
 		
 		public function step():void 
 		{
-			system.do_physics();
+			system.process();
 		}
 		
 		public function setHBrake(value:Boolean):void 

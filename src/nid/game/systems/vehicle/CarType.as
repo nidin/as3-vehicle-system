@@ -16,6 +16,9 @@ package nid.game.systems.vehicle
 		public var length:Number = 3.0;
 		public var wheellength:Number = 0.7;
 		public var wheelwidth:Number = 0.3;
+		
+		public var max_brake:Number = 1000;
+		public var max_throttle:Number = 100;
 	}
 
 }

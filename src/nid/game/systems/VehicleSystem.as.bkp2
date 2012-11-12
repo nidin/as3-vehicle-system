@@ -19,7 +19,7 @@ package nid.game.systems
 		public var vehicle:IVehicle;
 		
 		internal var C_drag:Number = 0.4257;
-		internal var C_traction:Number = 100;
+		internal var C_traction:Number = 1000;
 		internal var C_rr:Number = C_drag * 30;
 		
 		//Engine
@@ -68,7 +68,7 @@ package nid.game.systems
 		//Port values
 		public var CA_R:Number	 		= -5.20
 		public var CA_F:Number 		= -5.0
-		public var MAX_GRIP:Number 	=  6.0
+		public var MAX_GRIP:Number 	=  36.0
 		public var sn:Number;
 		public var cs:Number;
 		public var breakme:Number;
@@ -189,14 +189,14 @@ package nid.game.systems
 			
 			yawspeed = car.cartype.wheelbase * 0.5 * car.angularvelocity;	
 			
-			if (brake_value && velocity.x <= 0 && !car.reverse)
-			{
-				car.brake = 0;
-				velocity.setTo(0, 0);
-				car.velocity_wc.setTo(0, 0);
-				car.steerangle = 0;
-				car.angularvelocity = 0;
-			}
+			//if (brake_value && velocity.x <= 0 && !car.reverse)
+			//{
+				//car.brake = 0;
+				//velocity.setTo(0, 0);
+				//car.velocity_wc.setTo(0, 0);
+				//car.steerangle = 0;
+				//car.angularvelocity = 0;
+			//}
 			
 			if( velocity.x == 0 )
 				rot_angle = 0;
@@ -264,27 +264,19 @@ package nid.game.systems
 			
 			if (velocity.x > 0) car.setRotation(0, car.angle * (180 / Math.PI), 0);
 			
-			car.wheel_FL.rotateX( -velocity.x);
+			car.wheel_FL.rotateX(-velocity.x);
 			car.wheel_FR.rotateX(velocity.x);
-			
 			if (!brake_value)
 			{
 				car.wheel_BL.rotateX(-velocity.x);
 				car.wheel_BR.rotateX(velocity.x);
 			}
-			
-			Wf = 0.5 * weight - ((car.cartype.h / car.cartype.wheelbase) * car.cartype.mass * acceleration.x);
-			Wr = 0.5 * weight + ((car.cartype.h / car.cartype.wheelbase) * car.cartype.mass * acceleration.x);
-			
-			Wshift = Wf / Wr;
-			car.chassis.setRotation(1 * (Wshift-1),0, 0);
-			
 		}
 		
 		private function SGN(value:Number):int
 		{
-			return value == 0?0:(value < 0 ? -1 : 1);
-			//return value < 0 ? -1 : 1;
+			//return value == 0?0:(value < 0 ? -1 : 1);
+			return value < 0 ? -1 : 1;
 		}
 		
 		

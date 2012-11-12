@@ -46,6 +46,7 @@ package nid.test
 			stage.scaleMode = "noScale";
 			
 			scene = new Viewer3D( this );
+			scene.clearColor.setTo(Number(0x1C) / 255, Number(0xB3) / 255, Number(0xF9) / 255);
 			scene.registerClass(Flare3DLoader1);
 			scene.registerClass(SpecularFilter);
 			scene.autoResize = true;
@@ -58,7 +59,7 @@ package nid.test
 			scene.camera = camera;
 			
 			light = new Light3D( "", Light3D.POINT )
-			scene.defaultLight = light
+			//scene.defaultLight = light;
 			
 			world_container = new Pivot3D("world");
 			car_container = new Pivot3D("vehicle");
@@ -136,7 +137,6 @@ package nid.test
 			
 			//light
 			
-			vehicle.setHBrake(false);
 			//Accelerator
 			if (Input3D.keyDown(Input3D.UP)) {
 				vehicle.setAccelerate(1);
@@ -161,6 +161,7 @@ package nid.test
 			if (Input3D.keyDown(Input3D.SPACE)) {
 				vehicle.setHBrake(true);
 			}
+			else vehicle.setHBrake(false);
 
 			if (Input3D.keyHit(Input3D.R)) {
 				vehicle.reset();
@@ -175,21 +176,20 @@ package nid.test
 			info.htmlText = 'Wf:' + vehicle.system.Wf + 
 							'<br>Wr:' + vehicle.system.Wr + 
 							'<br>shift:' + vehicle.system.Wshift + 
-							'<br>A:' + vehicle.system.a + 
-							'<br>V:' + vehicle.system.velocity.x + 
 							'<br>F_drag:' + vehicle.system.F_drag + 
 							'<br>F_rr:' + vehicle.system.F_rr + 
 							'<br>F_long:' + vehicle.system.F_long +
 							'<br>F_traction:' + vehicle.system.ftraction +
-							'<br>F_braking:' + vehicle.system.F_braking +
+							'<br>F_braking:' + vehicle.brake +
 							'<br>RPM:' + vehicle.system.rpm +
 							'<br>HP:' + vehicle.system.hp +
 							'<br>Torque:' + vehicle.system.torque +
 							'<br>force:' + vehicle.system.force.x +
 							'<br>F_drive:' + vehicle.system.F_drive +
-							'<br>throttle:' + vehicle.throttle +
 							'<br>brake:' + vehicle.brake +
-							'<br>accelerate:' + vehicle.system.acc_value +
+							'<br>throttle:' + vehicle.system.car.throttle +
+							'<br>acceleration:' + vehicle.system.acceleration.x +
+							'<br>Velocity:' + vehicle.system.velocity + 
 							'<br>angle:' + (vehicle.angle * (180/Math.PI)) +
 							'<br>rot_angle:' + (vehicle.system.rot_angle * (180/Math.PI)) +
 							'<br>angular_acceleration:' + vehicle.system.angular_acceleration +
