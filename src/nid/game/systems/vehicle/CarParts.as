@@ -1,6 +1,6 @@
 package nid.game.systems.vehicle 
 {
-	import flare.core.Pivot3D;
+	import away3d.containers.ObjectContainer3D;
 	/**
 	 * ...
 	 * @author Nidin P Vinayak
@@ -25,6 +25,7 @@ package nid.game.systems.vehicle
 			
 			//fixed parts
 			parts.push(new Part("body"));
+			parts.push(new Part("gun_holder"));
 			
 			parts.push(new Part("head_light_L"));
 			parts.push(new Part("head_light_R"));
@@ -48,8 +49,8 @@ package nid.game.systems.vehicle
 			//universal parts
 			parts.push(new Part("wheel_FL"));
 			parts.push(new Part("wheel_FR"));
-			parts.push(new Part("wheel_BR"));
-			parts.push(new Part("wheel_BL"));
+			parts.push(new Part("wheel_RR"));
+			parts.push(new Part("wheel_RL"));
 		}
 		public function getPart(partName:String):Part
 		{
@@ -64,24 +65,26 @@ package nid.game.systems.vehicle
 			return null;
 		}
 		
-		public function mapPart(part:Pivot3D):void 
+		public function mapPart(part:ObjectContainer3D):void 
 		{
 			for (var i:int = 0; i < parts.length; i++)
 			{
 				if (part.name.indexOf(parts[i].name) > -1)
 				{
 					parts[i].push(part);
-					trace(part.name);
 				}
 			}
 		}
 		
-		public function init():void 
+		public function init(style:int):void 
 		{
 			for (var i:int = 0; i < parts.length; i++)
 			{
 				parts[i].meshes.reverse();
-				if (parts[i].meshes.length > 0) parts[i].meshes[0].visible = true;
+				if (parts[i].meshes.length > 0) 
+				{
+					parts[i].activate(style);
+				}
 			}
 		}
 	}

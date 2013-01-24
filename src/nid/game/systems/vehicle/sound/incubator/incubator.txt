@@ -1,0 +1,20 @@
+1.0         # RPM range Multiplier
+1.0         # Pitch multiplier
+starteng.wav        # engine ignition sound
+90         # turbo charger volume (set to 0 if no turbo)
+50         # gear box noise volume
+1         # amount of backfires (0-1)
+1         # Has stereo sample set
+100 100         # volume of mono/stereo samples
+3         # unloaded samples
+3         # loaded samples
+
+--- unloaded ---
+incubator_idle.wav incubator_stidle.wav     	1453 0 3483    # mono / stereo / rpm
+incubator_midoff.wav incubator_stmidoff.wav	3194 1239 6795   # mono / stereo / rpm
+incubator_highoff.wav incubator_sthighoff.wav 	6222 5000 10000   # mono / stereo / rpm
+
+--- loaded ---
+incubator_idle.wav incubator_stidle.wav     		1453 0 3483    # mono / stereo / rpm   
+incubator_midload.wav incubator_stmidload.wav		3194 1239 6795   # mono / stereo / rpm 
+incubator_highload.wav incubator_sthighload.wav 	6222 5000 10000   # mono / stereo / rpm
