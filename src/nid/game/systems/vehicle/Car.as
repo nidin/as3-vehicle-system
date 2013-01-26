@@ -382,8 +382,9 @@ package nid.game.systems.vehicle
 		public function destroy():void 
 		{
 			phyVehicle.getRigidBody().clearForces();
-			phyVehicle.getRigidBody().angularVelocity = new Vector3D(Math.random() * 25, Math.random() * 5, Math.random() * 5);
+			phyVehicle.getRigidBody().angularVelocity = new Vector3D(Math.random() * 10, Math.random() * 5, Math.random() * 5);
 			phyVehicle.getRigidBody().linearVelocity = new Vector3D(Math.random() * 25, Math.random() * 30, Math.random() * 25);
+			particles.explosion();
 		}
 	}
 

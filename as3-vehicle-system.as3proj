@@ -16,6 +16,8 @@
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
     <class path="src" />
+    <class path="..\away3d-core-fp11\src" />
+    <class path="..\ParticleDesignTool\src" />
   </classpaths>
   <!-- Build options -->
   <build>
@@ -50,7 +52,6 @@
   </includeLibraries>
   <!-- SWC Libraries -->
   <libraryPaths>
-    <element path="lib\away3d-core-fp11_4_1_0_Alpha.swc" />
     <element path="lib\AwayPhysics.swc" />
   </libraryPaths>
   <!-- External Libraries -->

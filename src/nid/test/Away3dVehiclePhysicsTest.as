@@ -42,17 +42,17 @@ package nid.test{
 	import nid.utils.Graph;
 
 
-
-	[SWF(backgroundColor="#000000", frameRate="60", width="1024", height="768")]
+	[SWF(backgroundColor = "#000000", frameRate = "60", width = "1024", height = "768")]
+	
 	public class Away3dVehiclePhysicsTest extends Sprite 
 	{
 		// Environment map.
-		[Embed(source = "../../../assets/skybox/sky_posX.jpg")]private var EnvPosX:Class;
-		[Embed(source = "../../../assets/skybox/sky_posY.jpg")]private var EnvPosY:Class;
-		[Embed(source = "../../../assets/skybox/sky_posZ.jpg")]private var EnvPosZ:Class;
-		[Embed(source = "../../../assets/skybox/sky_negX.jpg")]private var EnvNegX:Class;
-		[Embed(source = "../../../assets/skybox/sky_negY.jpg")]private var EnvNegY:Class;
-		[Embed(source = "../../../assets/skybox/sky_negZ.jpg")]private var EnvNegZ:Class;
+		[Embed(source = "../../../assets/skybox/sky_posX.jpg")] private var EnvPosX:Class;
+		[Embed(source = "../../../assets/skybox/sky_posY.jpg")] private var EnvPosY:Class;
+		[Embed(source = "../../../assets/skybox/sky_posZ.jpg")] private var EnvPosZ:Class;
+		[Embed(source = "../../../assets/skybox/sky_negX.jpg")] private var EnvNegX:Class;
+		[Embed(source = "../../../assets/skybox/sky_negY.jpg")] private var EnvNegY:Class;
+		[Embed(source = "../../../assets/skybox/sky_negZ.jpg")] private var EnvNegZ:Class;
 		
 		public var view : View3D;
 		private var physicsWorld : AWPDynamicsWorld;

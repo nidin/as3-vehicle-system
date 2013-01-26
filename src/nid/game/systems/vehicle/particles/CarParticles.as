@@ -33,6 +33,7 @@ package nid.game.systems.vehicle.particles
 		private var wheel_RL:ObjectContainer3D;
 		private var hidden_position:Vector3D;
 		private var offset_position:Vector3D;
+		private var explosion_particle:Explosion;
 		
 		public function CarParticles() 
 		{
@@ -50,10 +51,11 @@ package nid.game.systems.vehicle.particles
 			//smoke_particle_HOOD = new FollowSmoke(smoke_bmp.bitmapData);
 			smoke_particle_RL = new FollowSmoke(smoke_bmp.bitmapData, 10);
 			smoke_particle_RR = new FollowSmoke(smoke_bmp.bitmapData, 10);
-			
+			explosion_particle = new Explosion();
 			//hood.scene.addChild(smoke_particle_HOOD);
 			hood.scene.addChild(smoke_particle_RL);
 			hood.scene.addChild(smoke_particle_RR);
+			hood.scene.addChild(explosion_particle);
 			
 			smoke_target_HOOD = new Object3D();
 			smoke_target_RL = new Object3D();
@@ -77,7 +79,9 @@ package nid.game.systems.vehicle.particles
 			if (!ready) return;
 			isVisible = false;
 		}
-		
+		public function explosion():void {
+			explosion_particle.play();
+		}
 		public function update(rigidBody:AWPRigidBody):void 
 		{
 			var speed:Number = Math.abs((rigidBody.linearVelocity.z + 5)  / 4);
@@ -99,6 +103,8 @@ package nid.game.systems.vehicle.particles
 			//smoke_particle_HOOD.update(speed);
 			smoke_particle_RL.update(speed);
 			smoke_particle_RR.update(speed);
+			explosion_particle.position = hood.scenePosition;
+			explosion_particle.update(speed);
 		}
 	}
 

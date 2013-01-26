@@ -16,7 +16,7 @@
     </define>
     <define append="true">
       <name>CONFIG::timeStamp</name>
-      <value>'24-01-2013'</value>
+      <value>'26-01-2013'</value>
     </define>
     <define append="true">
       <name>CONFIG::air</name>
@@ -32,16 +32,17 @@
     </define>
     <verbose-stacktraces>true</verbose-stacktraces>
     <source-path append="true">
-      <path-element>D:\Git-repo\as3-vehicle-system\src</path-element>
+      <path-element>F:\Git-Repo\as3-vehicle-system\src</path-element>
+      <path-element>F:\Git-Repo\away3d-core-fp11\src</path-element>
+      <path-element>F:\Git-Repo\ParticleDesignTool\src</path-element>
       <path-element>C:\Program Files (x86)\FlashDevelop\Library\AS3\classes</path-element>
     </source-path>
     <library-path append="true">
-      <path-element>D:\Git-repo\as3-vehicle-system\lib\away3d-core-fp11_4_1_0_Alpha.swc</path-element>
-      <path-element>D:\Git-repo\as3-vehicle-system\lib\AwayPhysics.swc</path-element>
+      <path-element>F:\Git-Repo\as3-vehicle-system\lib\AwayPhysics.swc</path-element>
     </library-path>
   </compiler>
   <file-specs>
-    <path-element>D:\Git-repo\as3-vehicle-system\src\nid\test\Away3dVehiclePhysicsTest.as</path-element>
+    <path-element>F:\Git-Repo\as3-vehicle-system\src\nid\test\Away3dVehiclePhysicsTest.as</path-element>
   </file-specs>
   <default-background-color>#FFFFFF</default-background-color>
   <default-frame-rate>60</default-frame-rate>
