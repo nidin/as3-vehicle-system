@@ -7,6 +7,7 @@ package nid.game.systems.vehicle.particles
 	import away3d.library.assets.AssetType;
 	import away3d.loaders.AssetLoader;
 	import away3d.loaders.parsers.ParticleGroupParser;
+	import flash.geom.Vector3D;
 	import flash.net.URLRequest;
 	import flash.utils.clearTimeout;
 	import flash.utils.setTimeout;
@@ -19,6 +20,7 @@ package nid.game.systems.vehicle.particles
 	{
 		private var fire:ParticleGroup;
 		private var glass:ParticleGroup;
+		private var explosive:ParticleGroup;
 		private var clearID:uint;
 		private var isReady:Boolean;
 		
@@ -26,11 +28,15 @@ package nid.game.systems.vehicle.particles
 		{
 			var loader:AssetLoader = new AssetLoader();
 			loader.addEventListener(AssetEvent.ASSET_COMPLETE, onFireReady);
-			loader.load(new URLRequest('explosion-fire-4.4.grp'), null, null, new ParticleGroupParser());
+			loader.load(new URLRequest('gfx/explosion-fire-4.4.grp'), null, null, new ParticleGroupParser());
+			
+			loader = new AssetLoader();
+			loader.addEventListener(AssetEvent.ASSET_COMPLETE, onExplosiveReady);
+			loader.load(new URLRequest('gfx/explosion-4.4.grp'), null, null, new ParticleGroupParser());
 			
 			loader = new AssetLoader();
 			loader.addEventListener(AssetEvent.ASSET_COMPLETE, onGlassReady);
-			loader.load(new URLRequest('glass_1.2.grp'), null, null, new ParticleGroupParser());
+			loader.load(new URLRequest('gfx/shatters_1.0.grp'), null, null, new ParticleGroupParser());
 		}
 		
 		private function onFireReady(e:AssetEvent):void 
@@ -44,6 +50,18 @@ package nid.game.systems.vehicle.particles
 				isReady = true;
 			}
 		}
+		private function onExplosiveReady(e:AssetEvent):void 
+		{
+			if (e.asset.assetType == AssetType.CONTAINER && e.asset is ParticleGroup) {
+				explosive = e.asset as ParticleGroup;
+				explosive.particleMeshes.forEach(function(a:Mesh, i:int, ar:Vector.<Mesh>):void {
+					Mesh(a).castsShadows = false;
+				});
+				addChild(explosive);
+				explosive.visible = false;
+				explosive.position = new Vector3D(0, 25, 100);
+			}
+		}
 		private function onGlassReady(e:AssetEvent):void 
 		{
 			if (e.asset.assetType == AssetType.CONTAINER && e.asset is ParticleGroup) {
@@ -55,6 +73,10 @@ package nid.game.systems.vehicle.particles
 			}
 		}
 		public function play():void {
+			if (!isReady) return;
+			explosive.animator.resetTime();
+			explosive.animator.start();
+			explosive.visible = true;
 			fire.animator.resetTime();
 			fire.animator.start();
 			glass.animator.resetTime();
@@ -65,6 +87,7 @@ package nid.game.systems.vehicle.particles
 		
 		public function stop():void 
 		{
+			explosive.animator.stop();
 			fire.animator.stop();
 			glass.animator.stop();
 		}
