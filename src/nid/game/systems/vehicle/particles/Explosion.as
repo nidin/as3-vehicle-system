@@ -32,7 +32,7 @@ package nid.game.systems.vehicle.particles
 			
 			loader = new AssetLoader();
 			loader.addEventListener(AssetEvent.ASSET_COMPLETE, onExplosiveReady);
-			loader.load(new URLRequest('gfx/explosion-4.4.grp'), null, null, new ParticleGroupParser());
+			loader.load(new URLRequest('gfx/explosion-multi-4.4.grp'), null, null, new ParticleGroupParser());
 			
 			loader = new AssetLoader();
 			loader.addEventListener(AssetEvent.ASSET_COMPLETE, onGlassReady);
@@ -59,7 +59,7 @@ package nid.game.systems.vehicle.particles
 				});
 				addChild(explosive);
 				explosive.visible = false;
-				explosive.position = new Vector3D(0, 25, 100);
+				explosive.position = new Vector3D(150, 25, 0);
 			}
 		}
 		private function onGlassReady(e:AssetEvent):void 
