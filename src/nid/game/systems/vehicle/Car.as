@@ -206,7 +206,6 @@ package nid.game.systems.vehicle
 			turning.maxSuspensionForce = 50000;
 			phyVehicle = new AWPRaycastVehicle(turning, carBody);
 			physics.addVehicle(phyVehicle);
-			
 		}
 		private function createCarShape() : AWPCompoundShape {
 			var boxShape1 : AWPBoxShape = new AWPBoxShape(200, 70, 450);
@@ -215,7 +214,7 @@ package nid.game.systems.vehicle
 			var carShape : AWPCompoundShape = new AWPCompoundShape();
 			carShape.addChildShape(boxShape1, new Vector3D(0, 80, 25), new Vector3D());
 			carShape.addChildShape(boxShape2, new Vector3D(0, 120, 0), new Vector3D());
-
+			
 			return carShape;
 		}
 		public function setWheel(obj:ObjectContainer3D):void 

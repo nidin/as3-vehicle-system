@@ -53,6 +53,7 @@
   <!-- SWC Libraries -->
   <libraryPaths>
     <element path="lib\AwayPhysics.swc" />
+    <element path="lib\UI-elements.swc" />
   </libraryPaths>
   <!-- External Libraries -->
   <externalLibraryPaths>

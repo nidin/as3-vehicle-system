@@ -107,6 +107,7 @@ package nid.test{
 		public static var instance:Away3dVehiclePhysicsTest;
 		
 		public function Away3dVehiclePhysicsTest() {
+			addChild(new KeyConfig());
 			instance = this;
 			if (stage) init();
 			else addEventListener(Event.ADDED_TO_STAGE, init);
